@@ -55,3 +55,24 @@ The Power BI summary cards match these figures exactly.
 | Month-to-month | 32.2% | 54.6% | 22.4 points |
 | One year | 9.3% | 19.3% | 10.0 points |
 | Two year | 1.9% | 7.2% | 5.3 points |
+
+## 6. Tenure and churn
+
+The dataset is a snapshot, so these figures compare customers at different tenures. They do not follow the same customers over time.
+
+| Tenure | Month-to-month | One year | Two year | All contracts |
+|---|---|---|---|---|
+| 0-12 months | 51.4% (1,994) | 10.5% (124) | 0.0% (68) | 47.4% (2,186) |
+| 13-24 months | 37.7% (737) | 8.1% (197) | 0.0% (90) | 28.7% (1,024) |
+| 25-48 months | 32.9% (802) | 10.6% (518) | 2.2% (274) | 20.4% (1,594) |
+| 49+ months | 26.0% (342) | 12.9% (634) | 3.3% (1,263) | 9.5% (2,239) |
+
+Churn rate, with customer count in brackets.
+
+**At what point is churn risk highest?** In the first months of the relationship. Month 1 is the peak: 62.0% of customers with one month of tenure have churned (613 customers). The rate then falls to 51.7% at month 2, about 47-48% at months 3-5, and 31-39% from months 6 to 12. In the 6-month histogram bins, the 0-5 month bin has the most churned customers of any bin (744 churned versus 627 retained, 54.3% churn).
+
+**Are long-tenure customers less likely to churn, and does the effect hold once you control for contract type?** Overall, yes: churn falls from 47.4% in the first year to 9.5% after 49 months. Once contract type is controlled, the effect holds only for month-to-month customers (51.4% falling to 26.0%). For one-year customers the rate does not fall (10.5%, 8.1%, 10.6%, 12.9%). For two-year customers it is close to zero at every tenure: none of the 158 customers with under 24 months of tenure churned, and the rate reaches only 3.3% at 49+ months. Part of the overall tenure effect is therefore a contract-mix effect: 84.7% of customers with 49+ months of tenure are on one- or two-year contracts (1,897 of 2,239), compared with 8.8% of customers in their first year (192 of 2,186). Contract type matters at every tenure level, while tenure matters mainly within month-to-month. Even month-to-month customers with 49+ months churn at 26.0%, against 3.3% for two-year customers of the same tenure. These are associations, not proof of cause.
+
+## 7. Interactivity
+
+Four dropdown slicers (Contract, InternetService, PaymentMethod, Churn) sit at the bottom of every page and are synced, so a selection filters every visual on every page. I tested this: Contract = Month-to-month shows 3,875 customers at a 42.71% churn rate, and adding InternetService = Fiber optic shows 2,128 customers at 54.61%, both matching the Python checks. Every chart has a tooltip showing the exact churn rate and customer count. Four calculated measures were added and checked against Python: average tenure of churned customers (17.98 months), average monthly charge of churned customers (74.44), the share of customers with both OnlineSecurity and TechSupport (15.6%), and the share with both streaming services (27.5%). The first two always describe churned customers, so they ignore the Churn slicer by design.
