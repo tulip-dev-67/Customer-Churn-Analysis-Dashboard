@@ -76,3 +76,56 @@ Churn rate, with customer count in brackets.
 ## 7. Interactivity
 
 Four dropdown slicers (Contract, InternetService, PaymentMethod, Churn) sit at the bottom of every page and are synced, so a selection filters every visual on every page. I tested this: Contract = Month-to-month shows 3,875 customers at a 42.71% churn rate, and adding InternetService = Fiber optic shows 2,128 customers at 54.61%, both matching the Python checks. Every chart has a tooltip showing the exact churn rate and customer count. Four calculated measures were added and checked against Python: average tenure of churned customers (17.98 months), average monthly charge of churned customers (74.44), the share of customers with both OnlineSecurity and TechSupport (15.6%), and the share with both streaming services (27.5%). The first two always describe churned customers, so they ignore the Churn slicer by design.
+
+## 8. Service combinations and cohorts
+
+**Pareto of service combinations among churned customers.** The 1,869 churned customers fall into 65 distinct combinations of the six add-on services. The ten most common cover 64.2% of them:
+
+| Rank | Combination | Churned | Cumulative share |
+|---|---|---|---|
+| 1 | Internet only (no add-ons) | 362 | 19.4% |
+| 2 | TV + Movies | 131 | 26.4% |
+| 3 | Movies | 120 | 32.8% |
+| 4 | No internet | 113 | 38.8% |
+| 5 | TV | 105 | 44.5% |
+| 6 | Protection + TV + Movies | 96 | 49.6% |
+| 7 | Backup | 82 | 54.0% |
+| 8 | Backup + Protection + TV + Movies | 77 | 58.1% |
+| 9 | Backup + TV + Movies | 58 | 61.2% |
+| 10 | Protection | 56 | 64.2% |
+
+None of the top ten combinations includes OnlineSecurity or TechSupport, the two services most associated with lower churn (section 4). The largest single group is internet customers with no add-ons at all: 362 churned customers (19.4% of all churners) out of 693 such customers, a 52.2% churn rate. The pattern is not a strict 80/20, because churn is spread across many combinations. Counts also reflect how common a combination is, not only how risky it is, so the chart tooltip shows each combination's churn rate.
+
+**Cohort analysis by tenure bucket.**
+
+| Cohort | Customers | Churn rate | Avg monthly charge | Avg add-on services |
+|---|---|---|---|---|
+| 0-12 months | 2,186 | 47.4% | 56.10 | 1.01 |
+| 13-24 months | 1,024 | 28.7% | 61.36 | 1.59 |
+| 25-48 months | 1,594 | 20.4% | 65.93 | 2.17 |
+| 49+ months | 2,239 | 9.5% | 73.95 | 3.15 |
+
+Service uptake (share of all customers in the cohort, including customers with no internet) rises with tenure for every service. OnlineSecurity goes from 12.4% in the first year to 46.9% at 49+ months, and TechSupport from 12.9% to 47.0%, roughly 3.6-3.8 times higher. Backup, DeviceProtection and both streaming services go from 15-23% to 54-56%. The newest customers have the lowest uptake of exactly the services most associated with retention, and their churn is the highest. Average monthly charge rises with tenure (about 32% higher in the 49+ cohort), consistent with section 5: price alone does not explain churn. The cohorts are different customers at one point in time, not the same customers followed over time, and long-tenure customers are survivors, so this shows an association rather than proof that services cause retention.
+
+## 9. Recommendations
+
+**Highest-risk segment:** month-to-month Fiber optic customers in their first 12 months. There are 916 of them (13.0% of customers). 70.2% have churned, against 26.5% overall, and they account for 34.4% of all churned customers. 764 of the 916 (83%) have neither OnlineSecurity nor TechSupport, and that sub-group churns at 72.9%.
+
+**What I would offer:**
+1. A first-year bundle of OnlineSecurity and TechSupport at free or reduced cost for the first few months, offered at sign-up, because churn peaks at month 1 (62.0%).
+2. A discounted move to a one-year contract once the bundle period ends.
+3. A smaller incentive to switch from electronic check to automatic payment.
+
+**Evidence in the dashboard:**
+
+| Claim | Where to see it | Figure |
+|---|---|---|
+| Longer contracts churn far less | Contract & Billing: churn rate by contract type | 42.7% month-to-month, 11.3% one-year, 2.8% two-year |
+| Fiber churn stays high within month-to-month | Services: churn by internet service type, with Contract slicer set to Month-to-month | Fiber 54.6% vs DSL 32.2% |
+| Security and support go with lower churn | Services: churn rate by add-on service and status | OnlineSecurity 41.8% without vs 14.6% with; TechSupport 41.6% vs 15.2% |
+| Early life is the danger zone | Tenure: churn rate by tenure bucket and tenure histogram | 47.4% in the first year; 0-5 month bin has 744 churned vs 627 retained |
+| New customers rarely take those services | Insights: service uptake matrix | Security 12.4%, Support 12.9% in the first year |
+| The segment is large and at high risk | Insights: cohort table with Contract = Month-to-month and InternetService = Fiber optic | 916 customers, 70.2% churn in the 0-12 cohort |
+| Electronic check is over-represented | Contract & Billing: payment method charts | 57.3% of churners; 45.3% churn vs 15.2-19.1% for other methods |
+
+All of this evidence is associative, so I would pilot the offer against a control group before rolling it out.
